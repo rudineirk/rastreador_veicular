@@ -34,33 +34,13 @@ class User(models.Model):
             return False
 
 
-class LogLogin(models.Model):
-    class Meta:
-        db_table = 'log_login'
-        ordering = ['timestamp']
-    user = models.ForeignKey(User)
-    timestamp = models.DateTimeField(auto_now=True)
-    status = models.IntegerField()
-    origin = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.__unicode__()
-
-    def __unicode__(self):
-        return unicode(json.dumps({
-            'user': self.user,
-            'timestamp': self.timestamp,
-            'status': self.status,
-            'origin': self.origin,
-        }, ensure_ascii=False))
-
-
 class Tracker(models.Model):
     class Meta:
         db_table = 'tracker'
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     user = models.ForeignKey(User)
+    serial = models.CharField(max_length=50)
 
     def __str__(self):
         return self.__unicode__()
@@ -69,6 +49,7 @@ class Tracker(models.Model):
         return unicode(json.dumps({
             'name': self.name,
             'user': self.user,
+            'serial': self.serial,
         }, ensure_ascii=False))
 
 
@@ -81,7 +62,7 @@ class Localization(models.Model):
     pos_long = models.FloatField()
     pos_alt = models.FloatField()
     velocity = models.FloatField()
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField()
     tracker = models.ForeignKey(Tracker)
 
     def __str__(self):

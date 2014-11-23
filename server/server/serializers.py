@@ -19,6 +19,7 @@ class TrackerSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'user',
+            'serial',
         )
 
 
