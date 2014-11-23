@@ -2,13 +2,14 @@ from django.conf.urls import patterns, url
 
 from . import views
 
-urlpatterns = patterns('',
-    url(r'^rastreador/$', views.rastreador),
-    url(r'^rastreador/(?P<pk>\d+)/$', views.rastreador),
-    url(r'^localizacao/$', views.localizacao),
-    url(r'^localizacao/(?P<pk>\d+)/$', views.localizacao),
-    url(r'^usuario/$', views.usuario),
-    url(r'^usuario/(?P<pk>\d+)/$', views.usuario),
-    url(r'^movimentacao/$', views.movimentacao),
-    url(r'^movimentacao/(?P<pk>\d+)/$', views.movimentacao),
+urlpatterns = patterns(
+    '',
+    url(r'^tracker/$', views.tracker_list),
+    url(r'^tracker/(?P<pk>\d+)/$', views.tracker),
+    url(r'^localization/$', views.localization_list),
+    url(r'^localization/(?P<pk>\d+)/$', views.localization),
+    url(r'^user/$', views.user_list),
+    url(r'^user/(?P<pk>\d+)/$', views.user),
+    url(r'^movement/(?P<user>\w+)/(?P<tracker>\w+)/$',
+        views.movement),
 )
