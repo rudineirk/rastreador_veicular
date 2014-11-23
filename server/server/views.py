@@ -2,27 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.shortcuts import render
 from django.http import HttpResponse
-import json
-
-from .models import Usuario, Rastreador, Localizacao
-
-RETORNOS = {
-    'ok': [{'status': 'ok'}, 200],
-    'nao_encontrado': [{'status': 'erro',
-                        'erro': 'Não encontrado'}, 404],
-    'parametros_invalidos': [{'status': 'erro',
-                              'erro': 'Parâmetros inválidos'}, 400],
-    'nao_modificado': [{'status': 'aviso',
-                        'aviso': 'Dados não modificados'}, 304],
-    'nao_implementado': [{'status': 'erro',
-                          'erro': 'Não implementado'}, 501],
-    'metodo_invalido': [{'status': 'erro',
-                         'erro': 'Método inválido'}]
-}
-
-
 def get_json_data(req_body):
     try:
         req_json = json.loads(request.body)
