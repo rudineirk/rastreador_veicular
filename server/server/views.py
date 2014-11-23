@@ -98,16 +98,15 @@ def tracker(request, pk=None):
 
 
 @api_view(['GET', 'POST'])
-def localization_list(request, user=None, tracker=None):
+def localization_list(request, serial=None):
     if request.method == "GET":
         localizations = Localization.objects.all()
         serializer = LocalizationSerializer(localization, many=True)
         return JSONResponse(serializer.data)
     if request.method == "POST":
         try:
-            user = User.objects.get(name=user)
-            tracker = Tracker.objects.get(user=user, name=tracker)
-        except (User.DoesNotExist, Tracker.DoesNotExist):
+            tracker = Tracker.objects.get(serial=serial)
+        except Tracker.DoesNotExist:
             return HttpResponse(status=404)
 
         data = JSONParser().parse(request)
@@ -145,7 +144,7 @@ def localization(request, pk=None):
 def movement(request, user=None, tracker=None):
     try:
         user = User.objects.get(name=user)
-        tracker = Tracker.objects.get(user=user, name=tracker)
+        tracker = Tracker.objects.get(name=tracker)
         localization = Localization.objects.all().order_by('-timestamp').get()
     except (User.DoesNotExist,
             Tracker.DoesNotExist,
