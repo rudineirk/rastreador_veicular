@@ -60,6 +60,22 @@ def user(request, pk=None):
     return JSONResponse(serializer.data)
 
 
+@api_view(['POST'])
+def login(request):
+    data = JSONParser().parse(request)
+    user = data.get('user', None)
+    password = data.get('password', None)
+    if user is None or password is None:
+        return HttpResponse(status=400)
+
+    try:
+        users = User.objects.get(name=user, password=password)
+    except User.DoesNotExist:
+        return HttpResponse(status=404)
+
+    return JSONResponse({'login': 'ok'}, status=200)
+
+
 @api_view(['GET', 'POST'])
 def tracker_list(request):
     if request.method == "GET":
