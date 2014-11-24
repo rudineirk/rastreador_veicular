@@ -3,7 +3,7 @@
 import json
 import requests
 import time
-
+from requests.exceptions import ConnectionError, Timeout
 
 class EnvioPosicao(object):
     def __init__(self, queue, serial='', server_addr=''):
@@ -22,12 +22,15 @@ class EnvioPosicao(object):
                 'velocity': data.velocidade,
                 'timestamp': data.timestamp,
             }
-            response = requests.post(self.url, data=json.dumps(data))
-            if not response.ok:
-                print('Failed ({0}): {1}\n'.format(
-                    response.status_code,
-                    response.text,
-                ))
+            try:
+                response = requests.post(self.url, data=json.dumps(data))
+                if not response.ok:
+                    print('Failed ({0}): {1}\n'.format(
+                        response.status_code,
+                        response.text,
+                    ))
+            except (ConnectionError, Timeout):
+                print('Failed: Connection Error')
             time.sleep(0.01)
 
     def get_url(self):
