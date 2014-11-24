@@ -20,7 +20,7 @@ class EnvioPosicao(object):
                 'pos_long': data.longitude,
                 'pos_lat': data.latitude,
                 'velocity': data.velocidade,
-                'timestamp': data.timestamp,
+                'timestamp': data.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
             }
             try:
                 response = requests.post(self.url, data=json.dumps(data))
