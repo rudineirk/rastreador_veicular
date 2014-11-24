@@ -11,7 +11,7 @@ class PosicaoGPS(object):
     def __init__(self, gpsdata):
         self.longitude = float(gpsdata.longitude)
         self.latitude = float(gpsdata.latitude)
-        self.altitude = int(gpsdata.antenna_altitude)
+        self.altitude = float(gpsdata.antenna_altitude)
         self.velocidade = 0.0
         self.timestamp = datetime.now()
 
@@ -79,9 +79,7 @@ class MonitoraPosicao(object):
 
     def verifica_gps(self):
         while True:
-            if not self.gps.verificaGpsPronto():
-                time.sleep(1)
-                continue
+            if self.gps.verificaGpsPronto():
+                self.queue.put(self.gps.lerPosicao())
 
-            self.queue.put(self.gps.lerPosicao())
             time.sleep(2)
