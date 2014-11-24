@@ -8,8 +8,8 @@ from .communication import EnvioPosicao
 from .gpsmonitor import MonitoraPosicao
 
 
-TRACKER = 't1'
-SERVER_ADDR = 'http://192.168.1.50'
+SERIAL = 'A123456'
+SERVER_ADDR = 'http://192.168.1.50:8000'
 
 class RastreadorVeicular(object):
     def __init__(self):
@@ -17,7 +17,7 @@ class RastreadorVeicular(object):
         self.monitora = MonitoraPosicao(self.queue)
         self.envio_pos = EnvioPosicao(
             self.queue,
-            tracker=TRACKER,
+            serial=SERIAL,
             server_addr=SERVER_ADDR,
         )
 

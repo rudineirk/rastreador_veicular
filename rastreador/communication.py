@@ -6,10 +6,10 @@ import time
 
 
 class EnvioPosicao(object):
-    def __init__(self, queue, tracker='', server_addr=''):
+    def __init__(self, queue, serial='', server_addr=''):
         self.queue = queue
         self.server_addr = server_addr
-        self.tracker = tracker
+        self.serial = serial
         self.url = self.get_url()
 
     def envia_pos(self):
@@ -34,6 +34,6 @@ class EnvioPosicao(object):
         url = '/'.join([
             self.server_addr,
             'api/localization',
-            self.tracker,
+            self.serial,
         ])
         return url + '/'
