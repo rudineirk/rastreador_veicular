@@ -24,6 +24,7 @@ class TrackerSerializer(serializers.ModelSerializer):
 
 
 class LocalizationSerializer(serializers.ModelSerializer):
+    dt = serializers.Field(source='to_datestring')
     class Meta:
         model = Localization
         fields = (
@@ -32,6 +33,6 @@ class LocalizationSerializer(serializers.ModelSerializer):
             'pos_long',
             'pos_alt',
             'velocity',
-            'timestamp',
+            'dt',
             'tracker',
         )

@@ -76,3 +76,6 @@ class Localization(models.Model):
             'timestamp': self.timestamp,
             'tracker': self.tracker.id,
         }, ensure_ascii=False))
+
+    def to_datestring(self):
+        return self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
