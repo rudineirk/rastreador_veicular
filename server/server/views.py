@@ -115,16 +115,17 @@ def tracker(request, pk=None):
 
 @api_view(['GET', 'POST'])
 def localization_list(request, serial=None):
+    try:
+        tracker = Tracker.objects.get(serial=serial)
+    except Tracker.DoesNotExist:
+        return HttpResponse(status=404)
+
     if request.method == "GET":
-        localizations = Localization.objects.all()
-        serializer = LocalizationSerializer(localization, many=True)
+        localizations = Localization.objects.filter(tracker=tracker)
+        localizations = localizations.order_by('-timestamp')[:10]
+        serializer = LocalizationSerializer(localizations, many=True)
         return JSONResponse(serializer.data)
     if request.method == "POST":
-        try:
-            tracker = Tracker.objects.get(serial=serial)
-        except Tracker.DoesNotExist:
-            return HttpResponse(status=404)
-
         data = JSONParser().parse(request)
         data['tracker'] = tracker.pk
         serializer = LocalizationSerializer(data=data)
