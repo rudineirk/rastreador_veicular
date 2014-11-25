@@ -5,6 +5,7 @@ from . import views
 urlpatterns = patterns(
     '',
     url(r'^tracker/$', views.tracker_list),
+    url(r'^tracker/(?P<user>\w+)/$', views.tracker_list),
     url(r'^tracker/(?P<pk>\d+)/$', views.tracker),
     url(r'^localization/$', views.localization_list),
     url(r'^localization/(?P<pk>\d+)/$', views.localization),

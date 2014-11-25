@@ -77,9 +77,13 @@ def login(request):
 
 
 @api_view(['GET', 'POST'])
-def tracker_list(request):
+def tracker_list(request, user=None):
     if request.method == "GET":
-        trackers = Tracker.objects.all()
+        try:
+            user = User.objects.get(name=user)
+        except User.DoesNotExist:
+            return HttpResponse(status=404)
+        trackers = Tracker.objects.filter(user=user)
         serializer = TrackerSerializer(trackers, many=True)
         return JSONResponse(serializer.data)
     if request.method == "POST":
