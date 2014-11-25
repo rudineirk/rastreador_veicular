@@ -12,5 +12,5 @@ urlpatterns = patterns(
     url(r'^user/$', views.user_list),
     url(r'^user/(?P<pk>\d+)/$', views.user),
     url(r'^login/$', views.login),
-    url(r'^movement/(?P<user>\w+)/(?P<tracker>\w+)/$', views.movement),
+    url(r'^movement/(?P<user>\w+)/(?P<serial>\w+)/$', views.movement),
 )

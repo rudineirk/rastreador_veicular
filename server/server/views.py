@@ -157,11 +157,12 @@ def localization(request, pk=None):
 
 
 @api_view(['GET'])
-def movement(request, user=None, tracker=None):
+def movement(request, user=None, serial=None):
     try:
         user = User.objects.get(name=user)
-        tracker = Tracker.objects.get(name=tracker)
-        localization = Localization.objects.all().order_by('-timestamp').get()
+        tracker = Tracker.objects.get(serial=serial, user=user)
+        localization = Localization.objects.filter(tracker=tracker)
+        localization = localization.order_by('-timestamp')[0]
     except (User.DoesNotExist,
             Tracker.DoesNotExist,
             Localization.DoesNotExist):
@@ -173,7 +174,7 @@ def movement(request, user=None, tracker=None):
         "pos_lat": localization.pos_lat,
         "pos_long": localization.pos_long,
         "pos_alt": localization.pos_alt,
-        "timestamp": localization.timestamp
+        "dt": localization.to_datestring(),
     }
 
     if localization.velocity > 20:
