@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">Login</string>
+    <string name="app_name">Lista de Rastreadores</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="title_activity_edit_user">Adicionar Rastreador</string>
+    <string name="title_activity_detail_rastreador">Detalhes do Rastreador</string>
+    <string name="title_activity_login">Login</string>
+</resources>
