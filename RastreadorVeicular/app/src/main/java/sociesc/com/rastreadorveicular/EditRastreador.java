@@ -34,6 +34,7 @@ public class EditRastreador extends FragmentActivity {
     private Button deleteButton;
     private Button saveButton;
     Long rastreadorId = Long.MAX_VALUE;
+    DataTracker rastreador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +46,15 @@ public class EditRastreador extends FragmentActivity {
         deleteButton = (Button) findViewById(R.id.btApagar);
         saveButton = (Button) findViewById(R.id.btSalvar);
 
+
+
         Intent intent = getIntent();
         rastreadorId = intent.getLongExtra("USER_ID", Long.MAX_VALUE);
-
-        if(rastreadorId.equals(Long.MAX_VALUE)){
-            deleteButton.setVisibility(View.INVISIBLE);
-        }else{
-            DataTracker rastreador = RastreadorManagerApp.getRastreadorById(rastreadorId);
-            nameRastreadorTextField.setText(rastreador.name);
-            serialRastreadorTextField.setText(rastreador.serial);
+        if (rastreadorId == Long.MAX_VALUE) {
+            new HttpGetRastreadorTask().execute(rastreadorId);
+        } else {
+            this.rastreador = null;
         }
-
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +69,6 @@ public class EditRastreador extends FragmentActivity {
                 apagarUsuario();
             }
         });
-
-
     }
 
     private void apagarUsuario(){
@@ -98,7 +95,6 @@ public class EditRastreador extends FragmentActivity {
         getMenuInflater().inflate(R.menu.edit_rastreador, menu);
         return true;
     }
-
 
     private class HttpRequestDeleteRastreadorTask extends AsyncTask<Void, Void, Boolean > {
 
@@ -194,61 +190,45 @@ public class EditRastreador extends FragmentActivity {
     }
 
 
-    private class HttpRequestCreateRastreadorTask extends AsyncTask<Void, Void, Rastreador > {
+    private class HttpSendRastreadorTask extends AsyncTask<DataTracker, Void, Boolean > {
 
         @Override
-        protected Rastreador doInBackground(Void... params) {
+        protected Boolean doInBackground(DataTracker... trackers) {
             try {
-                StringBuilder builder = new StringBuilder();
-                String url = RastreadorManagerApp.URL_API + "/users";
-                Log.i("MainActivity", url);
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost post = new HttpPost(url);
-                JSONObject rastreadorJson = new JSONObject();
-                rastreadorJson.put("name", nameRastreadorTextField.getText().toString());
-                rastreadorJson.put("email", serialRastreadorTextField.getText().toString());
-                JSONObject holder = new JSONObject();
-                holder.put("user", rastreadorJson);
-                StringEntity se = new StringEntity(holder.toString());
-                post.setEntity(se);
-                post.setHeader("Accept", "application/json");
-                post.setHeader("Content-type", "application/json");
-                HttpResponse response = httpClient.execute(post);
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                Rastreador rastreador = null;
-                if(statusCode == 200) {
-                    HttpEntity entity = response.getEntity();
-                    InputStream content = entity.getContent();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        builder.append(line);
-                    }
-                    JSONObject jsonObject = new JSONObject(builder.toString());
-
-                    JSONObject rastreadorJsonRes = jsonObject.getJSONObject("user");
-                    rastreador = new Rastreador();
-                    rastreador.id = rastreadorJsonRes.getLong("id");
-                    rastreador.name = rastreadorJsonRes.getString("name");
-                    rastreador.serial = rastreadorJsonRes.getString("email");
-
-                }
-                return rastreador;
-
+                new ApiTracker().delete(trackers[0])
+                return true;
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
 
-            return null;
+            return false;
         }
 
         @Override
-        protected void onPostExecute(Rastreador rastreador) {
-            if(rastreador != null) {
+        protected void onPostExecute(Boolean status) {
+            if(status) {
                 showMessage("Rastreador salvo com sucesso", true);
             }
         }
 
+    }
+
+    private class HttpGetRastreadorTask extends AsyncTask<Long, Void, DataTracker > {
+        DataTracker rastreador;
+        @Override
+        protected DataTracker doInBackground(Long... index) {
+            rastreador = new ApiTracker().get_item("teste", index[0].intValue());
+            return rastreador;
+        }
+
+        protected void onPostExecute(DataTracker rastreador) {
+            this.rastreador = rastreador;
+            if(rastreador == null) {
+                deleteButton.setVisibility(View.INVISIBLE);
+            }else {
+                nameRastreadorTextField.setText(rastreador.name);
+                serialRastreadorTextField.setText(rastreador.serial);
+            }
+        }
     }
 }

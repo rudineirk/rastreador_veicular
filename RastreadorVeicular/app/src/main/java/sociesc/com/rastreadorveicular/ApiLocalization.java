@@ -18,7 +18,11 @@ public class ApiLocalization extends ApiClient {
     protected List<DataLocalization> get_list(String serial) {
         data.clear();
         try {
-            JSONArray jsonArray = new JSONArray(this.request(this.base_url + "/localization/" + serial + "/"));
+            JSONArray jsonArray = new JSONArray(this.request(
+                this.base_url + "/localization/" + serial + "/",
+                "GET",
+                ""
+            ));
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject localizationJson = jsonArray.getJSONObject(i);
                 DataLocalization localization = new DataLocalization();

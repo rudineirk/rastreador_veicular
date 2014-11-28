@@ -14,7 +14,11 @@ import java.util.List;
 public class ApiMovement extends ApiClient {
     protected DataMovement get_item(String user, String serial) {
         try {
-            JSONObject movementJson = new JSONObject(this.request(this.base_url + "/movement/" + user + "/" + serial + ""));
+            JSONObject movementJson = new JSONObject(this.request(
+                this.base_url + "/movement/" + user + "/" + serial + "",
+                "GET",
+                ""
+             ));
             DataMovement movement = new DataMovement();
 
             movement.movement = movementJson.getBoolean("movement");

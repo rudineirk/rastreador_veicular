@@ -22,7 +22,7 @@ public class RastreadorAdapter extends RecyclerView.Adapter<RastreadorAdapter.Vi
         // each data item is just a string in this case
         public TextView mTextViewNome;
         public TextView mTextViewSerial;//serial
-        //public TextView mTextViewEstado;
+
         public ViewHolder(View v) {
             super(v);
             mTextViewNome = (TextView) v.findViewById(R.id.nameRastreador);

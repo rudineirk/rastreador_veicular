@@ -1,5 +1,7 @@
 package sociesc.com.rastreadorveicular;
 
+import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,7 +19,11 @@ public class ApiTracker extends ApiClient {
     protected List<DataTracker> get_list(String user) {
         data.clear();
         try {
-            String result = this.request(this.base_url + "/tracker/" + user + "/");
+            String result = this.request(
+                this.base_url + "/tracker/" + user + "/",
+                "GET",
+                 ""
+            );
             JSONArray jsonArray =  new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject trackerJson = jsonArray.getJSONObject(i);
@@ -32,5 +38,62 @@ public class ApiTracker extends ApiClient {
            Log.e("MainActivity", e.getMessage(), e);
         }
         return data;
+    }
+
+    protected DataTracker get_item(String user, int index) {
+        this.get_list(user);
+        try {
+            return this.data.get(index);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    protected Boolean delete(DataTracker tracker) {
+        try {
+            this.request(
+                    this.base_url + "/tracker/" + tracker.id + "/",
+                    "DELETE",
+                    ""
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected Boolean create(DataTracker tracker) {
+        try {
+            JSONObject trackerJson = new JSONObject();
+            trackerJson.put("name", tracker.id);
+            trackerJson.put("user", tracker.user);
+            trackerJson.put("serial", tracker.serial);
+            this.request(
+                    this.base_url + "/tracker/",
+                    "POST",
+                    trackerJson.toString()
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected Boolean update(DataTracker tracker) {
+        try {
+            JSONObject trackerJson = new JSONObject();
+            trackerJson.put("id", tracker.id);
+            trackerJson.put("name", tracker.id);
+            trackerJson.put("user", tracker.user);
+            trackerJson.put("serial", tracker.serial);
+            this.request(
+                    this.base_url + "/tracker/" + tracker.id + "/",
+                    "PUT",
+                    trackerJson.toString()
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -13,16 +13,10 @@ public class RastreadorManagerApp extends Application{
 
     private static List<DataTracker> dbRastreadores;
 
-    //Altere para o IP de onde o servidor está rodando
-    //public static final String URL_API = "http://10.8.133.220:9090/api/v1";
-    //public static final String URL_API = "http://192.168.1.4:9090/api/v1";
-   // public static final String URL_API = "http://192.168.43.247:9090/api/v1";
-    public static final String URL_API = "http://192.168.1.5:9090/api/v1";
-
     @Override
     public void onCreate() {
         super.onCreate();
-        dbRastreadores = new ArrayList<DataTracker>();//cria a lista de rastreadores
+        dbRastreadores = new ArrayList<DataTracker>();
     }
 
     public static final List<DataTracker> getRastreadores() {
