@@ -28,7 +28,7 @@ import java.util.List;
  * Created by rudinei on 25/11/14.
  */
 abstract public class ApiClient {
-    String base_url = "http://192.168.1.50:8000/api";
+    String base_url = "http://192.168.0.100:8000/api";
 
     protected String request(String url, String method, String body) {
         try {
@@ -65,9 +65,5 @@ abstract public class ApiClient {
             Log.e("MainActivity", e.getMessage(), e);
         }
         return null;
-    }
-
-    protected Boolean put(String url) {
-
     }
 }

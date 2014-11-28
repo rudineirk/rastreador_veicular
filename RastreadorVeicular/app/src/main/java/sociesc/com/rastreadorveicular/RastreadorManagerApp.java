@@ -1,8 +1,6 @@
 package sociesc.com.rastreadorveicular;
 
 import android.app.Application;
-import android.provider.ContactsContract;
-
 import java.util.ArrayList;
 import java.util.List;
 

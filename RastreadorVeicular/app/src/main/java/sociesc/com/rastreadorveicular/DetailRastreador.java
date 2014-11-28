@@ -1,6 +1,7 @@
 package sociesc.com.rastreadorveicular;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -38,9 +39,12 @@ public class DetailRastreador extends FragmentActivity {
     private TextView velocidadeRastreadorTextField;
     private TextView serialRastreadorTextField;
     private Button deleteButton;
+    private Button showMapsButton;
     private GridView historicoRastreador;
     Long rastreadorId = Long.MAX_VALUE;
     Long userId = Long.MAX_VALUE;
+    private Double pos_lat;
+    private Double pos_long;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class DetailRastreador extends FragmentActivity {
         serialRastreadorTextField = (TextView) findViewById(R.id.serialRastreador);
         historicoRastreador = (GridView) findViewById(R.id.gridView);
         deleteButton = (Button) findViewById(R.id.btApagar);
+        showMapsButton = (Button) findViewById(R.id.gmaps);
 
         Intent intent = getIntent();
         rastreadorId = intent.getLongExtra("USER_ID", Long.MAX_VALUE);
@@ -83,6 +88,20 @@ public class DetailRastreador extends FragmentActivity {
             }
         });
         */
+
+        showMapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uriBegin = "geo:" + pos_lat + "," + pos_long;
+                String query = pos_lat + "," + pos_long;
+                String encodedQuery = Uri.encode(query);
+                String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+                Uri uri = Uri.parse(uriString);
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
     }
 
      /*
@@ -127,6 +146,8 @@ public class DetailRastreador extends FragmentActivity {
                     estadoRastreadorTextField.setText("Parado");
                 ultimaVerificacaoTextField.setText(new SimpleDateFormat().format(movement.dt));
                 velocidadeRastreadorTextField.setText(movement.velocity.toString() + " km/h");
+                pos_lat = movement.pos_lat;
+                pos_long = movement.pos_long;
             }
         }
     }
