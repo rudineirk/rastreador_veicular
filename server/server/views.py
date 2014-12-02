@@ -69,11 +69,16 @@ def login(request):
         return HttpResponse(status=400)
 
     try:
-        users = User.objects.get(name=user, password=password)
+        user = User.objects.get(
+            name=user,
+            password=password,
+            active=True,
+        )
     except User.DoesNotExist:
         return HttpResponse(status=404)
 
-    return JSONResponse({'login': 'ok'}, status=200)
+
+    return JSONResponse(UserSerializer(user).data, status=200)
 
 
 @api_view(['GET', 'POST'])

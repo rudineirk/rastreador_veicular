@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ApiUser extends ApiClient {
-    protected Boolean login(DataUser user) {
+    protected DataUser login(DataUser user) {
         String response;
+        DataUser response_user;
         try {
             JSONObject userJson = new JSONObject();
             userJson.accumulate("user", user.name);
@@ -25,13 +26,13 @@ public class ApiUser extends ApiClient {
                 userJson.toString()
             );
             JSONObject responseJson = new JSONObject(response);
-            response = responseJson.getString("login");
-            if (response.equals("ok"))
-                return true;
-            else
-                return false;
+            response_user = new DataUser();
+            response_user.name = responseJson.getString("name");
+            response_user.active = responseJson.getBoolean("active");
+            response_user.id = responseJson.getLong("id");
+            return response_user;
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
 }

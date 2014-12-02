@@ -138,14 +138,15 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public void login(String user){
+    public void login(DataUser user){
         openMainActivity = new Intent(this, MainActivity.class);
-        openMainActivity.putExtra("USER", user);
+        openMainActivity.putExtra("USER_ID", user.id);
+        openMainActivity.putExtra("USER_NAME", user.name);
+        openMainActivity.putExtra("USER_ACTIVE", user.active);
         startActivity(openMainActivity);
-
     }
 
-    private class UserLogin extends AsyncTask<Void, Void, Boolean> {
+    private class UserLogin extends AsyncTask<Void, Void, DataUser> {
 
         private final String user;
         private final String password;
@@ -156,7 +157,7 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected DataUser doInBackground(Void... params) {
             DataUser user_data = new DataUser();
             user_data.name = this.user;
             user_data.password = this.password;
@@ -164,13 +165,12 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final DataUser user) {
             AuthTask = null;
             showProgress(false);
 
-            if (success) {
+            if (user != null) {
                 login(user);
-
             } else {
                 Password.setError(getString(R.string.error_incorrect_password));
                 Password.requestFocus();

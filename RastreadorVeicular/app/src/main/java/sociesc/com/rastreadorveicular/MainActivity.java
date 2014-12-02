@@ -35,13 +35,18 @@ public class MainActivity extends FragmentActivity
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     private ImageButton fab;
+    private DataUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        user = new DataUser();
+        user.active = intent.getBooleanExtra("USER_ACTIVE", false);
+        user.id = intent.getLongExtra("USER_ID", Long.MAX_VALUE);
+        user.name = intent.getStringExtra("USER_NAME");
 
         fab = (ImageButton) findViewById(R.id.fab_add);
 
