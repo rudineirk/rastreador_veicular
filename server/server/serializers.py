@@ -33,6 +33,6 @@ class LocalizationSerializer(serializers.ModelSerializer):
             'pos_long',
             'pos_alt',
             'velocity',
-            'dt',
+            'timestamp',
             'tracker',
         )

@@ -31,7 +31,8 @@ class EnvioPosicao(object):
                     ))
             except (ConnectionError, Timeout):
                 print('Failed: Connection Error')
-            time.sleep(0.01)
+
+            time.sleep(0.1)
 
     def get_url(self):
         url = '/'.join([

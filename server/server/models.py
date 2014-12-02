@@ -12,7 +12,7 @@ class User(models.Model):
 
     name = models.CharField(max_length=50)
     password = models.CharField(max_length=30)
-    active = models.BooleanField()
+    active = models.BooleanField(default=None)
 
     def __str__(self):
         return self.__unicode__()

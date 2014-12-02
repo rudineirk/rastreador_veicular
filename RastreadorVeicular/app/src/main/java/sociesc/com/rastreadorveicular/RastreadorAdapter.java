@@ -41,7 +41,7 @@ public class RastreadorAdapter extends RecyclerView.Adapter<RastreadorAdapter.Vi
                                                    int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_list_item, parent, false);
+                .inflate(R.layout.rastreador_list, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;

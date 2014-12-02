@@ -9,7 +9,7 @@ from gpsmonitor import MonitoraPosicao
 
 
 SERIAL = 'A123456'
-SERVER_ADDR = 'http://192.168.1.50:8000'
+SERVER_ADDR = 'http://192.168.1.198:8000'
 
 class RastreadorVeicular(object):
     def __init__(self):
