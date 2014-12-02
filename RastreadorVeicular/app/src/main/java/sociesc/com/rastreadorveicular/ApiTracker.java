@@ -66,15 +66,10 @@ public class ApiTracker extends ApiClient {
 
     protected Boolean create(DataTracker tracker) {
         try {
-            HashMap <String, String> data = new HashMap<String, String>();
-
-            data.put("user", tracker.user.toString());
-            data.put("serial", tracker.serial.toString());
-            JSONObject trackerJson = new JSONObject(data);
-            //trackerJson = trackerJson.put("name", tracker.id);
-            //trackerJson = trackerJson.accumulate("user", tracker.user);
-            //trackerJson = trackerJson.accumulate("serial", tracker.serial);
-            //trackerJson.
+            JSONObject trackerJson = new JSONObject();
+            trackerJson.accumulate("name", tracker.name);
+            trackerJson.accumulate("user", tracker.user);
+            trackerJson.accumulate("serial", tracker.serial);
             this.request(
                     this.base_url + "/tracker/",
                     "POST",
@@ -90,7 +85,7 @@ public class ApiTracker extends ApiClient {
         try {
             JSONObject trackerJson = new JSONObject((Map) tracker);
             trackerJson.accumulate("id", tracker.id);
-            trackerJson.accumulate("name", tracker.id);
+            trackerJson.accumulate("name", tracker.name);
             trackerJson.accumulate("user", tracker.user);
             trackerJson.accumulate("serial", tracker.serial);
             this.request(

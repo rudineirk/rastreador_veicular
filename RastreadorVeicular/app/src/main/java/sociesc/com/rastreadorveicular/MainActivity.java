@@ -124,13 +124,15 @@ public class MainActivity extends FragmentActivity
 
     private void openEditRastreador(Long rastreadorId){
         Intent intent = new Intent(this, EditRastreador.class);
-        intent.putExtra("USER_ID", rastreadorId);
+        intent.putExtra("TRACKER_ID", rastreadorId);
+        intent.putExtra("USER_ID", user.id);
         startActivity(intent);
     }
 
     private void openDetailRastreador(Long rastreadorId){
         Intent intent = new Intent(this, DetailRastreador.class);
-        intent.putExtra("USER_ID", rastreadorId);
+        intent.putExtra("TRACKER_ID", rastreadorId);
+        intent.putExtra("USER_ID", user.id);
         startActivity(intent);
     }
 
