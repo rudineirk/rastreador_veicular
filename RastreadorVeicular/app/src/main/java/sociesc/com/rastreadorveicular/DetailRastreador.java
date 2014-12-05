@@ -43,6 +43,7 @@ public class DetailRastreador extends FragmentActivity {
     private GridView historicoRastreador;
     Long rastreadorId = Long.MAX_VALUE;
     Long userId = Long.MAX_VALUE;
+    String userName;
     private Double pos_lat;
     private Double pos_long;
 
@@ -60,7 +61,8 @@ public class DetailRastreador extends FragmentActivity {
         showMapsButton = (Button) findViewById(R.id.gmaps);
 
         Intent intent = getIntent();
-        rastreadorId = intent.getLongExtra("USER_ID", Long.MAX_VALUE);
+        rastreadorId = intent.getLongExtra("TRACKER_ID", Long.MAX_VALUE);
+        userName = intent.getStringExtra("USER_NAME");
 
         if(rastreadorId.equals(Long.MAX_VALUE)){
             deleteButton.setVisibility(View.INVISIBLE);
@@ -109,7 +111,7 @@ public class DetailRastreador extends FragmentActivity {
     private class HttpGetMovement extends AsyncTask<DataTracker, Void, DataMovement > {
         @Override
         protected DataMovement doInBackground(DataTracker... trackers) {
-            return new ApiMovement().get_item("teste", trackers[0].serial);
+            return new ApiMovement().get_item(userName, trackers[0].serial);
         }
 
         @Override

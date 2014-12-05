@@ -35,6 +35,7 @@ public class EditRastreador extends FragmentActivity {
     private Button saveButton;
     Long rastreadorId = Long.MAX_VALUE;
     Long usuarioId = Long.MAX_VALUE;
+    String usuarioName;
     DataTracker rastreador;
 
     @Override
@@ -50,6 +51,7 @@ public class EditRastreador extends FragmentActivity {
         Intent intent = getIntent();
         rastreadorId = intent.getLongExtra("TRACKER_ID", Long.MAX_VALUE);
         usuarioId = intent.getLongExtra("USER_ID", Long.MAX_VALUE);
+        usuarioName = intent.getStringExtra("USER_NAME");
         if (rastreadorId == Long.MAX_VALUE) {
             new HttpGetRastreadorTask().execute(rastreadorId);
         } else {
@@ -141,7 +143,7 @@ public class EditRastreador extends FragmentActivity {
         DataTracker rastreador;
         @Override
         protected DataTracker doInBackground(Long... index) {
-            rastreador = new ApiTracker().get_item("teste", index[0].intValue());
+            rastreador = new ApiTracker().get_item(usuarioName, index[0].intValue());
             return rastreador;
         }
 

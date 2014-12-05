@@ -70,7 +70,6 @@ public class MainActivity extends FragmentActivity
                     @Override public void onItemClick(View view, int position) {
                         Log.i(MainActivity.class.getName(),"LISTA CLICADA " + position);
                         DataTracker rastreador = RastreadorManagerApp.getRastreadorByPosition(position);
-                        //openEditUser(user.id);
                         openDetailRastreador(rastreador.id);
                     }
                 })
@@ -91,16 +90,12 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             refreshData();
@@ -125,6 +120,7 @@ public class MainActivity extends FragmentActivity
     private void openEditRastreador(Long rastreadorId){
         Intent intent = new Intent(this, EditRastreador.class);
         intent.putExtra("TRACKER_ID", rastreadorId);
+        intent.putExtra("USER_NAME", user.name);
         intent.putExtra("USER_ID", user.id);
         startActivity(intent);
     }
@@ -132,6 +128,7 @@ public class MainActivity extends FragmentActivity
     private void openDetailRastreador(Long rastreadorId){
         Intent intent = new Intent(this, DetailRastreador.class);
         intent.putExtra("TRACKER_ID", rastreadorId);
+        intent.putExtra("USER_NAME", user.name);
         intent.putExtra("USER_ID", user.id);
         startActivity(intent);
     }
@@ -142,7 +139,7 @@ public class MainActivity extends FragmentActivity
         List<DataTracker> rastreadores;
         @Override
         protected List<DataTracker> doInBackground(Void... params) {
-            rastreadores = new ApiTracker().get_list("teste"); // ----------------------- Mudar de 'teste' para o login
+            rastreadores = new ApiTracker().get_list(user.name);
             return rastreadores;
         }
 
