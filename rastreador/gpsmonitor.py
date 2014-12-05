@@ -43,8 +43,7 @@ class GPS(object):
         self.porta = porta
         self.baudrate = baudrate
         self.timeout = timeout
-        #self.porta = self.__init_porta__()
-        self.porta = None
+        self.porta = self.__init_porta__()
         self.gpsdata = nmea.GPGGA()
         self.old_pos = None
 
@@ -65,7 +64,11 @@ class GPS(object):
         return True
 
     def lerPosicao(self):
-        self.gpsdata.parse('$GPGGA,064746.000,4925.4895,N,00103.9255,E,1,05,2.1,-68.0,M,47.1,M,,0000*4F')
+        # Exemplo $GPGGA,064746.000,4925.4895,N,00103.9255,E,1,05,2.1,-68.0,M,47.1,M,,0000*4F
+        dados = self.porta.readline()
+        if not dados.startswith('$GPGGA'):
+            return None
+        self.gpsdata.parse(dados)
         gps_pos = PosicaoGPS(self.gpsdata)
         gps_pos.calc_velocidade(self.old_pos)
         self.old_pos = gps_pos
@@ -80,6 +83,8 @@ class MonitoraPosicao(object):
     def verifica_gps(self):
         while True:
             if self.gps.verificaGpsPronto():
-                self.queue.put(self.gps.lerPosicao())
+                gps_pos = self.gps.lerPosicao()
+                if gps_pos is not None:
+                    self.queue.put(gps_pos)
 
             time.sleep(2)

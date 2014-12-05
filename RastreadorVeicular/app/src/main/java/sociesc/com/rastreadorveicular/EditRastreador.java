@@ -62,17 +62,6 @@ public class EditRastreador extends FragmentActivity {
                 salvarDados();
             }
         });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                apagarRastreador();
-            }
-        });
-    }
-
-    private void apagarRastreador(){
-        new HttpDeleteRastreador().execute();
     }
 
     private void salvarDados(){
@@ -100,28 +89,6 @@ public class EditRastreador extends FragmentActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.edit_rastreador, menu);
         return true;
-    }
-
-    private class HttpDeleteRastreador extends AsyncTask<DataTracker, Void, Boolean > {
-
-        @Override
-        protected Boolean doInBackground(DataTracker... trackers) {
-            try {
-                new ApiTracker().delete(trackers[0]);
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if(success)
-                showMessage("Rastreador apagado com sucesso", true);
-            else
-                showMessage("Rastreador apagado com sucesso", false);
-        }
     }
 
     private class HttpCreateRastreador extends AsyncTask<DataTracker, Void, Boolean > {

@@ -28,7 +28,7 @@ import java.util.List;
  * Created by rudinei on 25/11/14.
  */
 abstract public class ApiClient {
-    String base_url = "http://rudineirk.ddns.net:8000/api";
+    String base_url = "http://rastreador-proj3.ddns.net/api";
 
     protected String request(String url, String method, String body) {
         try {

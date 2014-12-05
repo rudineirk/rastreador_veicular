@@ -49,7 +49,6 @@ public class DetailRastreador extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_edit_rastreador);
         setContentView(R.layout.activity_detail_rastreador);
 
         nomeRastreadorTextField = (TextView) findViewById(R.id.nomeRastreador);
@@ -57,7 +56,6 @@ public class DetailRastreador extends FragmentActivity {
         ultimaVerificacaoTextField = (TextView) findViewById(R.id.ultimaVerificacao);
         velocidadeRastreadorTextField = (TextView) findViewById(R.id.velocidadeRastreador);
         serialRastreadorTextField = (TextView) findViewById(R.id.serialRastreador);
-        historicoRastreador = (GridView) findViewById(R.id.gridView);
         deleteButton = (Button) findViewById(R.id.btApagar);
         showMapsButton = (Button) findViewById(R.id.gmaps);
 
@@ -73,21 +71,12 @@ public class DetailRastreador extends FragmentActivity {
             new HttpGetMovement().execute(rastreador);
         }
 
-        /*
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                salvarDados();
-            }
-        });
-
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apagarUsuario();
+                apagarRastreador();
             }
         });
-        */
 
         showMapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,20 +92,6 @@ public class DetailRastreador extends FragmentActivity {
         });
 
     }
-
-     /*
-     private void apagarUsuario(){
-        new HttpRequestDeleteUserTask().execute();
-    }
-
-    private void salvarDados(){
-        if(userId.equals(Long.MAX_VALUE)) {
-            new HttpRequestCreateRastreadorTask().execute();
-        }else{
-            new HttpRequestUpdateRastreadorTask().execute();
-        }
-    }
-    */
 
     private void showMessage(String message, boolean close){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -169,26 +144,16 @@ public class DetailRastreador extends FragmentActivity {
 
     }
 
-    /*
-    private class HttpRequestDeleteUserTask extends AsyncTask<Void, Void, Boolean > {
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                StringBuilder builder = new StringBuilder();
-                String url = RastreadorManagerApp.URL_API + "/users/" + rastreadorId.toString();
-                Log.i("MainActivity", url);
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpDelete delete = new HttpDelete(url);
-                delete.setHeader("Accept", "application/json");
-                delete.setHeader("Content-type", "application/json");
-                HttpResponse response = httpClient.execute(delete);
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if(statusCode == 200)
-                    return true;
-                else
-                    return false;
+    private void apagarRastreador(){
+        new HttpDeleteRastreador().execute();
+    }
 
+    private class HttpDeleteRastreador extends AsyncTask<DataTracker, Void, Boolean > {
+
+        @Override
+        protected Boolean doInBackground(DataTracker... trackers) {
+            try {
+                new ApiTracker().delete(trackers[0]);
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
@@ -204,20 +169,4 @@ public class DetailRastreador extends FragmentActivity {
                 showMessage("Rastreador apagado com sucesso", false);
         }
     }
-
-    private class HttpRequestUpdateRastreadorTask extends AsyncTask<Void, Void, Rastreador > {
-
-        @Override
-        protected Rastreador doInBackground(Void... params) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Rastreador rastreador) {
-            if (rastreador != null) {
-                showMessage("Rastreador atualizado com sucesso", true);
-            }
-        }
-    }
-    */
 }
